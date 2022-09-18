@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .header{
+            text-align: center;
+            background-color: orange;
+            border-radius: 10px;
+            margin:auto;
+            width: 70%;
+            padding:20px;
+        }
+        .mainList{
+            border:2px solid black;
+            border-radius: 3px;
+            width:80%;
+            margin:auto auto;
+            margin-top: 10px;
+            background-color: blueviolet;
+            /* padding: 5px; */
+        }
+        .listitem{
+            margin: 5px;
+            background-color: azure;
+            border-radius: 3px;
+            display: flex;
+        }
+        .listitem .text{
+            padding:2px;
+            width:100%;
+            margin: auto auto;
+            text-align: left;
+        }
+        .listitem .reminder{
+           
+            margin: 5px;
+            margin-right: 0px;
+            /* margin-left:150px; */
+            width:40%;
+        }
+        #addListItem{
+            background-color: blue;
+            border: 2px solid black;
+            border-radius: 4px;
+            color:white;
+            margin:5px 10px;
+        }
+        #textInput{
+            width:60%;
+        }
+    </style>
+</head>
+<body>
+    <audio src="alert.mp3" id="audio"></audio>
+    <div class="header">
+        <h1>Check your tasks here</h1>
+        <h1 id="alert" style="display:none">Task Alert!</h1>
+        <div id="list" class="mainList">
+            <div class="listitem">
+                <textarea class="text">hackathon</textarea>
+                <div class="reminder">
+                    <input type="datetime-local" name="" id="" value="2017-06-01T08:30">
+                </div>
+            </div>  
+        </div>
+        <div class="mainList">
+            <div class="listitem">
+                <input type="text" name="" id="textInput"  placeholder="type ur task here">
+                <input type="datetime-local" name="" id="timeInput" >
+            </div>
+        </div>
+        <button id="addListItem" onclick="addListItem()">Add Task</button>
+    </div>
+</body>
+<script >
+    // let timeArr=[];
+   let count=0;
+function addListItem(){
+let list=document.getElementById("list");
+let textInput=document.getElementById("textInput").value;
+let timeInput=document.getElementById("timeInput").value;
+
+list.innerHTML+=` <div class="listitem" id='${count++}'>
+                <textarea class="text">${textInput}</textarea>
+                <div class="reminder">
+                    <input type="datetime-local" name="" id="" value="${timeInput}">
+                </div>
+            </div>`;
+    console.log(timeInput);
+    //2022-09-18T14:32
+    //not applicable for months or years
+    let s=timeInput +"";
+    let days = parseInt(s.substring(8, 10));
+    let hrs = parseInt(s.substring(11,13));
+    let min = parseInt(s.substring(14,16));
+    let targetTym=days*24*60+hrs*60+min;
+    console.log(targetTym);        
+
+    let currentDate=new Date();
+    let currentTym= currentDate.getDate()*24*60 +currentDate.getHours()*60+currentDate.getMinutes();
+    // console.log(currentDate.getDate());
+    console.log(currentTym);
+     
+    let timeDiff=targetTym-currentTym;
+    console.log(timeDiff);
+    setTimeout(reminder,timeDiff*60*1000);
+}
+function reminder(){
+let alert=document.getElementById("alert");
+let audio=document.getElementById("audio");
+audio.play();
+alert.style.display="block";
+setTimeout(()=>{
+    alert.style.display="none"
+},2000);
+}
+</script>
+</html>
